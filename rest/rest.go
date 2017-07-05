@@ -1,4 +1,4 @@
-package json
+package rest
 
 import (
 	"bytes"
@@ -7,33 +7,38 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-
-	l "github.com/sirupsen/logrus"
 )
 
-func LoadJsonFromFile(path string, v interface{}) {
-	raw, err := ioutil.ReadFile(path)
+func GetAsString(url string) string {
+	res, err := http.Get(url)
 	if err != nil {
-		l.Fatal(err.Error())
+		panic(err.Error())
 	}
-	err = json.Unmarshal(raw, &v)
+	if res.StatusCode == 404 {
+		return ""
+	}
+	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		l.Fatal(err.Error())
+		panic(err.Error())
 	}
+	return string(body[:])
 }
 
 func Get(url string, v interface{}) {
 	res, err := http.Get(url)
 	if err != nil {
-		l.Fatal(err.Error())
+		panic(err.Error())
+	}
+	if res.StatusCode == 404 {
+		return
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		l.Fatal(err.Error())
+		panic(err.Error())
 	}
 	err = json.Unmarshal(body, &v)
 	if err != nil {
-		l.Fatal(err.Error())
+		panic(err.Error())
 	}
 }
 
@@ -42,7 +47,7 @@ func Post(url string, v interface{}) *http.Response {
 	json.NewEncoder(b).Encode(v)
 	res, err := http.Post(url, "application/json; charset=utf-8", b)
 	if err != nil {
-		l.Fatal(err)
+		panic(err.Error())
 	}
 	io.Copy(os.Stdout, res.Body)
 	return res
