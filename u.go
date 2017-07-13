@@ -1,4 +1,1 @@
 package u
-
-func main() {
-}

@@ -5,13 +5,13 @@ import (
 	"io/ioutil"
 )
 
-func LoadJsonFromFile(path string, v interface{}) {
+func LoadJsonFromFile(path string, v interface{}) error {
 	raw, err := ioutil.ReadFile(path)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
-	err = json.Unmarshal(raw, &v)
-	if err != nil {
-		panic(err.Error())
+	if err = json.Unmarshal(raw, &v); err != nil {
+		return err
 	}
+	return nil
 }
