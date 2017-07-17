@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+func ClearLine(width int) {
+	fmt.Printf("\r" + strings.Repeat(" ", width) + "\n")
+}
+
 func OverwriteWithProgress(s string, progress float64, width int) {
 	var progLength float64 = 20
 	prog := math.Min(progress*progLength+1, progLength)

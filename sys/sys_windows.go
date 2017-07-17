@@ -1,7 +1,6 @@
 package sys
 
 import (
-	"os"
 	"os/exec"
 	"path/filepath"
 
@@ -24,14 +23,14 @@ func Exec(path string) (*exec.Cmd, error) {
 
 func Kill(pid string) error {
 	kill := exec.Command("TASKKILL", "/T", "/F", "/PID", pid)
-	kill.Stderr = os.Stderr
-	kill.Stdout = os.Stdout
+	//kill.Stderr = os.Stderr
+	//kill.Stdout = os.Stdout
 	return kill.Run()
 }
 
 func KillByName(name string) error {
 	kill := exec.Command("TASKKILL", "/T", "/F", "/IM", name)
-	kill.Stderr = os.Stderr
-	kill.Stdout = os.Stdout
+	//kill.Stderr = os.Stderr
+	//kill.Stdout = os.Stdout
 	return kill.Run()
 }
